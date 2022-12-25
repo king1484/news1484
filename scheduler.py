@@ -52,7 +52,7 @@ def youtube():
         print(res.status_code)
     
     
-@sched.scheduled_job('interval', minutes=30)
+@sched.scheduled_job('interval', minutes=5)
 def news():
     categories = [
     "business",
