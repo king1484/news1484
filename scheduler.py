@@ -94,7 +94,6 @@ def news():
         })
         print(res.json())
         
-    print("started")
 
     for category in categories:
         n = 0
@@ -109,9 +108,6 @@ def news():
             newRes = r["articles"]
             for obj in newRes:
                 l2.append(obj["title"])
-            print(l1[0])
-            print(l2[0])
-            print(l1!=l2)
             if(l1!=l2):
                 print(f"Sending Notification For {category}") 
                 for i in range(1):
