@@ -1,7 +1,7 @@
 from flask import Flask, request
 from newspaper import Article
 from googletrans import Translator
-import json
+import asyncio
 
 app = Flask(__name__)
 
@@ -13,20 +13,30 @@ def hello():
 def news():
     url = request.form["url"]
     lang = request.form["lang"]
+
     article = Article(url)
     article.download()
     article.parse()
-    translator = Translator()
-    text = ""
+
     keywords = article.meta_keywords
-    if(lang == "en"):
-        text = article.text
-    else:
-        text = translator.translate(article.text, dest=lang).text
-    return {"text": text, "keywords": keywords, "title": article.title, "img_url": article.top_image}
+    text = ""
+
+    async def translate_article():
+        async with Translator() as translator:
+            if lang == "en":
+                return article.text
+            else:
+                result = await translator.translate(article.text, dest=lang)
+                return result.text
+
+    text = asyncio.run(translate_article())
+
+    return {
+        "text": text,
+        "keywords": keywords,
+        "title": article.title,
+        "img_url": article.top_image
+    }
 
 if __name__ == '__main__':
     app.run()
-
-    
-    
