@@ -3,3 +3,5 @@ gunicorn
 requests
 googletrans
 newspaper3k
+asyncio
+lxml_html_clean
